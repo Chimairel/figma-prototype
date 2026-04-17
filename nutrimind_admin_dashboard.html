@@ -1,0 +1,960 @@
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+  rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .adm {
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 700px;
+    border: 1px solid #2A2A2E;
+  }
+
+  .sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    transition: background 0.25s, border-color 0.25s;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    transition: background 0.25s;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    transition: background 0.25s, border-color 0.25s;
+  }
+
+  .page {
+    flex: 1;
+    padding: 16px 20px;
+    overflow: hidden;
+  }
+
+  .screen {
+    display: none;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  .bento {
+    border-radius: 16px;
+    padding: 16px;
+    border-width: 1px;
+    border-style: solid;
+    transition: background 0.25s, border-color 0.25s;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    border-radius: 14px;
+    padding: 14px;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    cursor: pointer;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.15s;
+    margin-bottom: 2px;
+  }
+
+  .nav-item.active {
+    border-left: 3px solid #4CAF50;
+  }
+
+  .nav-item:not(.active) {
+    border-left: 3px solid transparent;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .tbl th {
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .tbl td {
+    padding: 9px 10px;
+    border-top-width: 1px;
+    border-top-style: solid;
+  }
+
+  .pill {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    display: inline-block;
+  }
+
+  .bar-wrap {
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 5px;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .tog {
+    width: 40px;
+    height: 22px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+
+  .tog-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    transition: all 0.25s;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 13px;
+  }
+
+  .search-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 12px;
+    font-family: inherit;
+    width: 120px;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    flex-shrink: 0;
+  }
+</style>
+
+<div id="app" style="background:#0D0D0D;padding:1rem;border-radius:20px;">
+
+  <div class="adm" id="adm" style="background:#111113;border-color:#2A2A2E;">
+
+    <div class="sidebar" id="sidebar" style="background:#141416;border-right:1px solid #2A2A2E;">
+      <div style="padding:0 18px 20px;border-bottom:1px solid #2A2A2E;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div
+            style="width:28px;height:28px;border-radius:8px;background:rgba(76,175,80,0.2);display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" fill="#4CAF50" fill-opacity="0.3" />
+              <path d="M8 4c-1.5 2-4 3-4 5.5a4 4 0 008 0C12 7 9.5 6 8 4z" fill="#4CAF50" />
+            </svg>
+          </div>
+          <span style="font-size:14px;font-weight:700;color:#F3F4F6;" id="sb-brand">NutriMind</span>
+        </div>
+        <span
+          style="font-size:10px;font-weight:600;color:#4CAF50;background:rgba(76,175,80,0.1);padding:2px 8px;border-radius:20px;">Admin
+          Panel</span>
+      </div>
+
+      <div style="flex:1;">
+        <p style="font-size:9px;font-weight:700;color:#4B5563;padding:0 18px;margin-bottom:8px;letter-spacing:1px;">MAIN
+        </p>
+        <div class="nav-item active" id="nav-overview" onclick="goPage('overview')"
+          style="color:#4CAF50;background:rgba(76,175,80,0.08);">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <rect x="1" y="1" width="5.5" height="5.5" rx="1.5" stroke="#4CAF50" stroke-width="1.5" />
+            <rect x="8.5" y="1" width="5.5" height="5.5" rx="1.5" stroke="#4CAF50" stroke-width="1.5" />
+            <rect x="1" y="8.5" width="5.5" height="5.5" rx="1.5" stroke="#4CAF50" stroke-width="1.5" />
+            <rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.5" stroke="#4CAF50" stroke-width="1.5" />
+          </svg>
+          Overview
+        </div>
+        <div class="nav-item" id="nav-users" onclick="goPage('users')" style="color:#9CA3AF;">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <circle cx="7.5" cy="5" r="2.5" stroke="#9CA3AF" stroke-width="1.5" />
+            <path d="M2.5 13c0-2.761 2.239-5 5-5s5 2.239 5 5" stroke="#9CA3AF" stroke-width="1.5"
+              stroke-linecap="round" />
+          </svg>
+          Users
+          <span
+            style="margin-left:auto;background:rgba(76,175,80,0.15);color:#4CAF50;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;">1.2k</span>
+        </div>
+        <div class="nav-item" id="nav-meals" onclick="goPage('meals')" style="color:#9CA3AF;">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <circle cx="7.5" cy="7.5" r="5.5" stroke="#9CA3AF" stroke-width="1.5" />
+            <path d="M5 7.5h5M7.5 5v5" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          Meals & AI
+        </div>
+        <div class="nav-item" id="nav-analytics" onclick="goPage('analytics')" style="color:#9CA3AF;">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <polyline points="2,12 5,8 8,10 11,5 14,7" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Analytics
+        </div>
+        <div style="height:1px;background:#2A2A2E;margin:12px 0;"></div>
+        <p style="font-size:9px;font-weight:700;color:#4B5563;padding:0 18px;margin-bottom:8px;letter-spacing:1px;">
+          SYSTEM</p>
+        <div class="nav-item" id="nav-reports" onclick="goPage('reports')" style="color:#9CA3AF;">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <rect x="2" y="1" width="11" height="13" rx="2" stroke="#9CA3AF" stroke-width="1.5" />
+            <path d="M5 5h5M5 8h5M5 11h3" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          Reports
+        </div>
+        <div class="nav-item" style="color:#9CA3AF;cursor:pointer;">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <circle cx="7.5" cy="7.5" r="2" stroke="#9CA3AF" stroke-width="1.5" />
+            <path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14" stroke="#9CA3AF" stroke-width="1.5"
+              stroke-linecap="round" />
+          </svg>
+          Settings
+        </div>
+      </div>
+
+      <div style="padding:12px 18px;border-top:1px solid #2A2A2E;margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="avatar">AD</div>
+          <div style="min-width:0;">
+            <p style="font-size:11px;font-weight:700;color:#F3F4F6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+              id="sb-name">Admin</p>
+            <p style="font-size:10px;color:#4B5563;" id="sb-role">Super admin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main" id="main-area" style="background:#111113;">
+      <div class="topbar" id="topbar" style="background:#141416;border-color:#2A2A2E;">
+        <div>
+          <p style="font-size:11px;font-weight:600;color:#4B5563;" id="tb-date">Thursday, April 16, 2026</p>
+          <p style="font-size:16px;font-weight:700;color:#F3F4F6;" id="tb-title">Overview</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="search-box" id="top-search" style="background:#1A1A1E;border-color:#2A2A2E;">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M6 11A5 5 0 106 1a5 5 0 000 10zM11 11l-2-2" stroke="#9CA3AF" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg>
+            <input placeholder="Search..." id="top-search-in" style="color:#F3F4F6;">
+          </div>
+          <div style="position:relative;cursor:pointer;">
+            <div
+              style="width:32px;height:32px;border-radius:10px;background:#1A1A1E;border:1px solid #2A2A2E;display:flex;align-items:center;justify-content:center;">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path
+                  d="M7.5 1.5A4.5 4.5 0 003 6c0 3.5-1.5 4.5-1.5 4.5h12S12 9.5 12 6a4.5 4.5 0 00-4.5-4.5zM6.5 12a1 1 0 002 0"
+                  stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div
+              style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#EF5350;border:1.5px solid #141416;">
+            </div>
+          </div>
+          <div class="tog" id="top-tog" onclick="toggleTheme()" style="background:#4CAF50;">
+            <div class="tog-thumb" id="top-tog-thumb" style="background:#fff;transform:translateX(18px);"></div>
+          </div>
+          <div class="avatar" style="width:32px;height:32px;font-size:11px;">AD</div>
+        </div>
+      </div>
+
+      <div class="page">
+
+        <div class="screen active" id="page-overview">
+          <div class="stat-grid">
+            <div class="stat-card" id="sc1" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <div
+                  style="width:32px;height:32px;border-radius:10px;background:rgba(76,175,80,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="6" r="2.5" stroke="#4CAF50" stroke-width="1.5" />
+                    <path d="M3 13c0-2.761 2.239-5 5-5s5 2.239 5 5" stroke="#4CAF50" stroke-width="1.5"
+                      stroke-linecap="round" />
+                  </svg></div>
+                <span
+                  style="font-size:10px;font-weight:700;color:#4CAF50;background:rgba(76,175,80,0.12);padding:2px 6px;border-radius:6px;">+12%</span>
+              </div>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;line-height:1;">1,284</p>
+              <p style="font-size:11px;color:#6B7280;margin-top:3px;">Total users</p>
+              <div class="bar-wrap" style="background:#2A2A2E;margin-top:8px;">
+                <div class="bar-fill" style="width:72%;background:#4CAF50;"></div>
+              </div>
+            </div>
+            <div class="stat-card" id="sc2" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <div
+                  style="width:32px;height:32px;border-radius:10px;background:rgba(92,107,192,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2l1.5 3 3.5.5-2.5 2.5.5 3.5L8 9.5 5 11.5l.5-3.5L3 5.5 6.5 5 8 2z" stroke="#7986CB"
+                      stroke-width="1.5" stroke-linejoin="round" />
+                  </svg></div>
+                <span
+                  style="font-size:10px;font-weight:700;color:#7986CB;background:rgba(92,107,192,0.12);padding:2px 6px;border-radius:6px;">+8%</span>
+              </div>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;line-height:1;">4,721</p>
+              <p style="font-size:11px;color:#6B7280;margin-top:3px;">AI meals generated</p>
+              <div class="bar-wrap" style="background:#2A2A2E;margin-top:8px;">
+                <div class="bar-fill" style="width:58%;background:#7986CB;"></div>
+              </div>
+            </div>
+            <div class="stat-card" id="sc3" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <div
+                  style="width:32px;height:32px;border-radius:10px;background:rgba(255,167,38,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <polyline points="2,12 5,8 8,9 11,4 14,6" stroke="#FFA726" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div>
+                <span
+                  style="font-size:10px;font-weight:700;color:#FFA726;background:rgba(255,167,38,0.12);padding:2px 6px;border-radius:6px;">+24%</span>
+              </div>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;line-height:1;">89.4%</p>
+              <p style="font-size:11px;color:#6B7280;margin-top:3px;">Avg goal adherence</p>
+              <div class="bar-wrap" style="background:#2A2A2E;margin-top:8px;">
+                <div class="bar-fill" style="width:89%;background:#FFA726;"></div>
+              </div>
+            </div>
+            <div class="stat-card" id="sc4" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <div
+                  style="width:32px;height:32px;border-radius:10px;background:rgba(38,198,218,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="2" y="5" width="12" height="8" rx="2" stroke="#26C6DA" stroke-width="1.5" />
+                    <path d="M5 5V4a3 3 0 016 0v1" stroke="#26C6DA" stroke-width="1.5" stroke-linecap="round" />
+                  </svg></div>
+                <span
+                  style="font-size:10px;font-weight:700;color:#26C6DA;background:rgba(38,198,218,0.12);padding:2px 6px;border-radius:6px;">+5%</span>
+              </div>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;line-height:1;">342</p>
+              <p style="font-size:11px;color:#6B7280;margin-top:3px;">Active today</p>
+              <div class="bar-wrap" style="background:#2A2A2E;margin-top:8px;">
+                <div class="bar-fill" style="width:34%;background:#26C6DA;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="bento" id="bc1" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:12px;">WEEKLY
+                SIGNUPS</p>
+              <div style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:8px;">
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#3A3A3E;border-radius:4px 4px 0 0;height:45px;"></div>
+                </div>
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#3A3A3E;border-radius:4px 4px 0 0;height:60px;"></div>
+                </div>
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#3A3A3E;border-radius:4px 4px 0 0;height:38px;"></div>
+                </div>
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#4CAF50;border-radius:4px 4px 0 0;height:72px;"></div>
+                </div>
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#3A3A3E;border-radius:4px 4px 0 0;height:55px;"></div>
+                </div>
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#3A3A3E;border-radius:4px 4px 0 0;height:80px;"></div>
+                </div>
+                <div
+                  style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;">
+                  <div style="width:100%;background:#3A3A3E;border-radius:4px 4px 0 0;height:62px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <div style="flex:1;text-align:center;font-size:9px;color:#4B5563;">M</div>
+                <div style="flex:1;text-align:center;font-size:9px;color:#4B5563;">T</div>
+                <div style="flex:1;text-align:center;font-size:9px;color:#4B5563;">W</div>
+                <div style="flex:1;text-align:center;font-size:9px;color:#4CAF50;font-weight:700;">T</div>
+                <div style="flex:1;text-align:center;font-size:9px;color:#4B5563;">F</div>
+                <div style="flex:1;text-align:center;font-size:9px;color:#4B5563;">S</div>
+                <div style="flex:1;text-align:center;font-size:9px;color:#4B5563;">S</div>
+              </div>
+            </div>
+            <div class="bento" id="bc2" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:12px;">TOP GOALS
+              </p>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                      style="font-size:12px;color:#F3F4F6;font-weight:500;">Lose weight</span><span
+                      style="font-size:11px;color:#4CAF50;font-weight:700;">52%</span></div>
+                  <div class="bar-wrap" style="background:#2A2A2E;">
+                    <div class="bar-fill" style="width:52%;background:#4CAF50;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                      style="font-size:12px;color:#F3F4F6;font-weight:500;">Build muscle</span><span
+                      style="font-size:11px;color:#7986CB;font-weight:700;">30%</span></div>
+                  <div class="bar-wrap" style="background:#2A2A2E;">
+                    <div class="bar-fill" style="width:30%;background:#7986CB;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                      style="font-size:12px;color:#F3F4F6;font-weight:500;">Maintain weight</span><span
+                      style="font-size:11px;color:#FFA726;font-weight:700;">18%</span></div>
+                  <div class="bar-wrap" style="background:#2A2A2E;">
+                    <div class="bar-fill" style="width:18%;background:#FFA726;"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="height:1px;background:#2A2A2E;margin:12px 0;"></div>
+              <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:10px;">TOP
+                CUISINES</p>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span
+                  style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Filipino
+                  68%</span>
+                <span
+                  style="background:rgba(92,107,192,0.12);color:#7986CB;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Asian
+                  18%</span>
+                <span
+                  style="background:rgba(255,167,38,0.12);color:#FFA726;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Western
+                  9%</span>
+                <span
+                  style="background:rgba(38,198,218,0.12);color:#26C6DA;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Other
+                  5%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bento" id="bc3" style="background:#1A1A1E;border-color:#2A2A2E;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;">RECENT USERS</p>
+              <span onclick="goPage('users')" style="font-size:11px;font-weight:700;color:#4CAF50;cursor:pointer;">View
+                all &rarr;</span>
+            </div>
+            <table class="tbl" id="ov-tbl">
+              <thead>
+                <tr>
+                  <th style="color:#4B5563;">USER</th>
+                  <th style="color:#4B5563;">GOAL</th>
+                  <th style="color:#4B5563;">ADHERENCE</th>
+                  <th style="color:#4B5563;">STATUS</th>
+                  <th style="color:#4B5563;">JOINED</th>
+                </tr>
+              </thead>
+              <tbody id="ov-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="screen" id="page-users">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="search-box" id="usr-search" style="background:#1A1A1E;border-color:#2A2A2E;">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <path d="M6 11A5 5 0 106 1a5 5 0 000 10zM11 11l-2-2" stroke="#9CA3AF" stroke-width="1.5"
+                    stroke-linecap="round" />
+                </svg>
+                <input placeholder="Search users..." style="color:#F3F4F6;font-family:inherit;" id="user-search-in"
+                  oninput="filterUsers(this.value)">
+              </div>
+              <select id="goal-filter" onchange="filterUsers(document.getElementById('user-search-in').value)"
+                style="background:#1A1A1E;border:1px solid #2A2A2E;color:#9CA3AF;padding:6px 10px;border-radius:10px;font-size:12px;font-family:inherit;outline:none;">
+                <option value="">All goals</option>
+                <option value="Lose weight">Lose weight</option>
+                <option value="Build muscle">Build muscle</option>
+                <option value="Maintain">Maintain</option>
+              </select>
+            </div>
+            <button
+              style="background:#4CAF50;color:#fff;border:none;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">+
+              Export CSV</button>
+          </div>
+          <div class="bento" id="usr-card" style="background:#1A1A1E;border-color:#2A2A2E;">
+            <table class="tbl" id="user-tbl">
+              <thead>
+                <tr>
+                  <th style="color:#4B5563;">USER</th>
+                  <th style="color:#4B5563;">EMAIL</th>
+                  <th style="color:#4B5563;">GOAL</th>
+                  <th style="color:#4B5563;">ADHERENCE</th>
+                  <th style="color:#4B5563;">AI MEALS</th>
+                  <th style="color:#4B5563;">STATUS</th>
+                  <th style="color:#4B5563;">JOINED</th>
+                </tr>
+              </thead>
+              <tbody id="user-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="screen" id="page-meals">
+          <div class="three-col">
+            <div class="stat-card" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:9px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:6px;">TOTAL AI
+                MEALS</p>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;">4,721</p>
+              <p style="font-size:11px;color:#4CAF50;margin-top:3px;font-weight:600;">+8% this week</p>
+            </div>
+            <div class="stat-card" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:9px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:6px;">FILIPINO
+                MEALS</p>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;">3,210</p>
+              <p style="font-size:11px;color:#7986CB;margin-top:3px;font-weight:600;">68% of total</p>
+            </div>
+            <div class="stat-card" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:9px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:6px;">AVG
+                CALORIES</p>
+              <p style="font-size:22px;font-weight:700;color:#F3F4F6;">1,720</p>
+              <p style="font-size:11px;color:#FFA726;margin-top:3px;font-weight:600;">kcal per user/day</p>
+            </div>
+          </div>
+          <div class="bento" style="background:#1A1A1E;border-color:#2A2A2E;margin-bottom:12px;">
+            <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:12px;">TOP
+              AI-GENERATED MEALS</p>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="color:#4B5563;">MEAL NAME</th>
+                  <th style="color:#4B5563;">CUISINE</th>
+                  <th style="color:#4B5563;">TIMES GENERATED</th>
+                  <th style="color:#4B5563;">AVG KCAL</th>
+                  <th style="color:#4B5563;">TOP MACRO</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color:#F3F4F6;font-weight:600;border-color:#2A2A2E;">Healthy Sinigang</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">Filipino</span>
+                  </td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">842</td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">350 kcal</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="color:#EF5350;font-size:11px;font-weight:700;">Protein</span></td>
+                </tr>
+                <tr>
+                  <td style="color:#F3F4F6;font-weight:600;border-color:#2A2A2E;">Adobong Manok</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">Filipino</span>
+                  </td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">721</td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">420 kcal</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="color:#EF5350;font-size:11px;font-weight:700;">Protein</span></td>
+                </tr>
+                <tr>
+                  <td style="color:#F3F4F6;font-weight:600;border-color:#2A2A2E;">Tinolang Manok</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">Filipino</span>
+                  </td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">614</td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">290 kcal</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="color:#26C6DA;font-size:11px;font-weight:700;">Fats</span></td>
+                </tr>
+                <tr>
+                  <td style="color:#F3F4F6;font-weight:600;border-color:#2A2A2E;">Pinakbet Bowl</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">Filipino</span>
+                  </td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">430</td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">210 kcal</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="color:#FFA726;font-size:11px;font-weight:700;">Carbs</span></td>
+                </tr>
+                <tr>
+                  <td style="color:#F3F4F6;font-weight:600;border-color:#2A2A2E;">Pasta Aglio e Olio</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="background:rgba(239,83,80,0.12);color:#EF5350;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">Italian</span>
+                  </td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">210</td>
+                  <td style="color:#F3F4F6;border-color:#2A2A2E;">460 kcal</td>
+                  <td style="border-color:#2A2A2E;"><span
+                      style="color:#FFA726;font-size:11px;font-weight:700;">Carbs</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="screen" id="page-analytics">
+          <div class="two-col" style="margin-bottom:14px;">
+            <div class="bento" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:12px;">MACRO
+                DISTRIBUTION (ALL USERS)</p>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="position:relative;width:90px;height:90px;flex-shrink:0;">
+                  <svg width="90" height="90" viewBox="0 0 90 90">
+                    <circle cx="45" cy="45" r="36" fill="none" stroke="#2A2A2E" stroke-width="10" />
+                    <circle cx="45" cy="45" r="36" fill="none" stroke="#EF5350" stroke-width="10" stroke-dasharray="226"
+                      stroke-dashoffset="113" stroke-linecap="round" transform="rotate(-90 45 45)" />
+                    <circle cx="45" cy="45" r="36" fill="none" stroke="#FFA726" stroke-width="10" stroke-dasharray="226"
+                      stroke-dashoffset="158" stroke-linecap="round" transform="rotate(90 45 45)" />
+                    <circle cx="45" cy="45" r="36" fill="none" stroke="#26C6DA" stroke-width="10" stroke-dasharray="226"
+                      stroke-dashoffset="192" stroke-linecap="round" transform="rotate(180 45 45)" />
+                  </svg>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#EF5350;"></div><span
+                      style="font-size:12px;color:#F3F4F6;font-weight:500;">Protein</span><span
+                      style="font-size:12px;color:#EF5350;font-weight:700;margin-left:auto;">32%</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#FFA726;"></div><span
+                      style="font-size:12px;color:#F3F4F6;font-weight:500;">Carbs</span><span
+                      style="font-size:12px;color:#FFA726;font-weight:700;margin-left:auto;">46%</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#26C6DA;"></div><span
+                      style="font-size:12px;color:#F3F4F6;font-weight:500;">Fats</span><span
+                      style="font-size:12px;color:#26C6DA;font-weight:700;margin-left:auto;">22%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bento" style="background:#1A1A1E;border-color:#2A2A2E;">
+              <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:12px;">DAILY
+                ACTIVE USERS (30 DAYS)</p>
+              <div style="display:flex;align-items:flex-end;gap:3px;height:80px;">
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:40%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:55%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:35%;"></div>
+                <div style="flex:1;background:#4CAF50;border-radius:2px 2px 0 0;height:70%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:60%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:80%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:50%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:65%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:75%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:45%;"></div>
+                <div style="flex:1;background:#4CAF50;border-radius:2px 2px 0 0;height:90%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:68%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:55%;"></div>
+                <div style="flex:1;background:#2A2A2E;border-radius:2px 2px 0 0;height:72%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bento" style="background:#1A1A1E;border-color:#2A2A2E;">
+            <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:12px;">ONBOARDING
+              COMPLETION FUNNEL</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                    style="font-size:12px;color:#F3F4F6;font-weight:600;">Step 1 — Body stats</span><span
+                    style="font-size:11px;color:#4CAF50;font-weight:700;">100%</span></div>
+                <div class="bar-wrap" style="background:#2A2A2E;height:8px;">
+                  <div class="bar-fill" style="width:100%;background:#4CAF50;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                    style="font-size:12px;color:#F3F4F6;font-weight:600;">Step 2 — Food profile</span><span
+                    style="font-size:11px;color:#4CAF50;font-weight:700;">87%</span></div>
+                <div class="bar-wrap" style="background:#2A2A2E;height:8px;">
+                  <div class="bar-fill" style="width:87%;background:#4CAF50;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                    style="font-size:12px;color:#F3F4F6;font-weight:600;">Step 3 — Nutrition focus</span><span
+                    style="font-size:11px;color:#FFA726;font-weight:700;">74%</span></div>
+                <div class="bar-wrap" style="background:#2A2A2E;height:8px;">
+                  <div class="bar-fill" style="width:74%;background:#FFA726;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span
+                    style="font-size:12px;color:#F3F4F6;font-weight:600;">Step 4 — Goal confirmed</span><span
+                    style="font-size:11px;color:#EF5350;font-weight:700;">61%</span></div>
+                <div class="bar-wrap" style="background:#2A2A2E;height:8px;">
+                  <div class="bar-fill" style="width:61%;background:#EF5350;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen" id="page-reports">
+          <div class="bento" style="background:#1A1A1E;border-color:#2A2A2E;">
+            <p style="font-size:11px;font-weight:700;color:#6B7280;letter-spacing:0.5px;margin-bottom:14px;">SCHEDULED
+              REPORTS</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#141416;border:1px solid #2A2A2E;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:10px;background:rgba(76,175,80,0.12);display:flex;align-items:center;justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                      <rect x="2" y="1" width="11" height="13" rx="2" stroke="#4CAF50" stroke-width="1.5" />
+                      <path d="M5 5h5M5 8h3" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round" />
+                    </svg></div>
+                  <div>
+                    <p style="font-size:13px;font-weight:600;color:#F3F4F6;">Weekly User Summary</p>
+                    <p style="font-size:11px;color:#6B7280;">Every Monday · 8:00 AM</p>
+                  </div>
+                </div>
+                <span
+                  style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;">Active</span>
+              </div>
+              <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#141416;border:1px solid #2A2A2E;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:10px;background:rgba(92,107,192,0.12);display:flex;align-items:center;justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                      <polyline points="2,11 5,7 8,9 11,4 14,6" stroke="#7986CB" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></div>
+                  <div>
+                    <p style="font-size:13px;font-weight:600;color:#F3F4F6;">AI Meal Generation Report</p>
+                    <p style="font-size:11px;color:#6B7280;">Daily · 11:59 PM</p>
+                  </div>
+                </div>
+                <span
+                  style="background:rgba(76,175,80,0.12);color:#4CAF50;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;">Active</span>
+              </div>
+              <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#141416;border:1px solid #2A2A2E;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div
+                    style="width:32px;height:32px;border-radius:10px;background:rgba(255,167,38,0.12);display:flex;align-items:center;justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                      <rect x="2" y="1" width="11" height="13" rx="2" stroke="#FFA726" stroke-width="1.5" />
+                      <path d="M5 5h5M5 8h5M5 11h3" stroke="#FFA726" stroke-width="1.5" stroke-linecap="round" />
+                    </svg></div>
+                  <div>
+                    <p style="font-size:13px;font-weight:600;color:#F3F4F6;">Monthly Goal Adherence</p>
+                    <p style="font-size:11px;color:#6B7280;">1st of month · 9:00 AM</p>
+                  </div>
+                </div>
+                <span
+                  style="background:rgba(255,167,38,0.12);color:#FFA726;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;">Paused</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var isDark = true;
+
+  var users = [
+    { name: 'Chimairel Pacaldo', email: 'chimairel@email.com', goal: 'Lose weight', adh: 91, ai: 18, status: 'Active', joined: 'Jan 2026' },
+    { name: 'Juan dela Cruz', email: 'juan@email.com', goal: 'Build muscle', adh: 78, ai: 24, status: 'Active', joined: 'Feb 2026' },
+    { name: 'Maria Santos', email: 'maria@email.com', goal: 'Maintain', adh: 85, ai: 9, status: 'Active', joined: 'Mar 2026' },
+    { name: 'Jose Reyes', email: 'jose@email.com', goal: 'Lose weight', adh: 62, ai: 31, status: 'Inactive', joined: 'Jan 2026' },
+    { name: 'Ana Garcia', email: 'ana@email.com', goal: 'Build muscle', adh: 94, ai: 41, status: 'Active', joined: 'Feb 2026' },
+    { name: 'Pedro Lim', email: 'pedro@email.com', goal: 'Lose weight', adh: 44, ai: 7, status: 'Inactive', joined: 'Dec 2025' },
+  ];
+
+  var LT = {
+    appBg: '#F0F2F5', admBg: '#F7F8FA', admBorder: '#E0E3E8',
+    sidebarBg: '#FFFFFF', sidebarBorder: '#EAECEF',
+    mainBg: '#F7F8FA', topbarBg: '#FFFFFF', topbarBorder: '#EAECEF',
+    bentoBg: '#FFFFFF', bentoBorder: '#EAECEF',
+    scBg: '#F9FAFB', scBorder: '#EAECEF',
+    textPri: '#111827', textSec: '#6B7280', textHint: '#9CA3AF',
+    searchBg: '#F3F4F6', searchBorder: '#E5E7EB',
+    barBg: '#E5E7EB', chartBarBg: '#D1D5DB',
+    tblBorder: '#F0F2F5', tblHead: '#9CA3AF',
+    togBg: '#4CAF50', togThumb: '#fff', togPos: '18px',
+    rowBg: '#F9FAFB', rowBorder: '#EAECEF',
+    brandColor: '#111827', nameColor: '#374151', roleColor: '#9CA3AF',
+  };
+  var DT = {
+    appBg: '#0D0D0D', admBg: '#111113', admBorder: '#2A2A2E',
+    sidebarBg: '#141416', sidebarBorder: '#2A2A2E',
+    mainBg: '#111113', topbarBg: '#141416', topbarBorder: '#2A2A2E',
+    bentoBg: '#1A1A1E', bentoBorder: '#2A2A2E',
+    scBg: '#1A1A1E', scBorder: '#2A2A2E',
+    textPri: '#F3F4F6', textSec: '#6B7280', textHint: '#4B5563',
+    searchBg: '#1A1A1E', searchBorder: '#2A2A2E',
+    barBg: '#2A2A2E', chartBarBg: '#3A3A3E',
+    tblBorder: '#2A2A2E', tblHead: '#4B5563',
+    togBg: '#4CAF50', togThumb: '#fff', togPos: '18px',
+    rowBg: '#141416', rowBorder: '#2A2A2E',
+    brandColor: '#F3F4F6', nameColor: '#F3F4F6', roleColor: '#4B5563',
+  };
+
+  function applyTheme(dark) {
+    var t = dark ? DT : LT;
+    document.getElementById('app').style.background = t.appBg;
+    document.getElementById('adm').style.background = t.admBg;
+    document.getElementById('adm').style.borderColor = t.admBorder;
+    document.getElementById('sidebar').style.background = t.sidebarBg;
+    document.getElementById('sidebar').style.borderRightColor = t.sidebarBorder;
+    document.getElementById('main-area').style.background = t.mainBg;
+    document.getElementById('topbar').style.background = t.topbarBg;
+    document.getElementById('topbar').style.borderBottomColor = t.topbarBorder;
+    document.getElementById('top-search').style.background = t.searchBg;
+    document.getElementById('top-search').style.borderColor = t.searchBorder;
+    document.getElementById('top-search-in').style.color = t.textPri;
+    document.getElementById('top-tog').style.background = t.togBg;
+    document.getElementById('top-tog-thumb').style.transform = 'translateX(' + t.togPos + ')';
+    document.getElementById('tb-title').style.color = t.textPri;
+    document.getElementById('tb-date').style.color = t.textHint;
+    document.getElementById('sb-brand').style.color = t.brandColor;
+    document.getElementById('sb-name').style.color = t.nameColor;
+    document.getElementById('sb-role').style.color = t.roleColor;
+
+    document.querySelectorAll('.bento').forEach(function (e) { e.style.background = t.bentoBg; e.style.borderColor = t.bentoBorder; });
+    document.querySelectorAll('.stat-card').forEach(function (e) { e.style.background = t.scBg; e.style.borderColor = t.scBorder; });
+    document.querySelectorAll('.tbl th').forEach(function (e) { e.style.color = t.tblHead; });
+    document.querySelectorAll('.tbl td').forEach(function (e) { e.style.borderTopColor = t.tblBorder; });
+    document.querySelectorAll('.bar-wrap').forEach(function (e) { if (!e.style.background || e.style.background === 'rgb(42, 42, 46)' || e.style.background === 'rgb(229, 231, 235)') { e.style.background = t.barBg; } });
+
+    var usrSearch = document.getElementById('usr-search');
+    if (usrSearch) { usrSearch.style.background = t.searchBg; usrSearch.style.borderColor = t.searchBorder; }
+    var usrIn = document.getElementById('user-search-in');
+    if (usrIn) { usrIn.style.color = t.textPri; }
+    var goalF = document.getElementById('goal-filter');
+    if (goalF) { goalF.style.background = t.searchBg; goalF.style.borderColor = t.searchBorder; goalF.style.color = t.textSec; }
+  }
+
+  function renderUsers(list) {
+    var t = isDark ? DT : LT;
+    var tbody = document.getElementById('user-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = list.map(function (u) {
+      var adh_color = u.adh >= 80 ? '#4CAF50' : u.adh >= 60 ? '#FFA726' : '#EF5350';
+      var status_color = u.status === 'Active' ? '#4CAF50' : '#6B7280';
+      var status_bg = u.status === 'Active' ? 'rgba(76,175,80,0.12)' : 'rgba(107,114,128,0.12)';
+      return '<tr><td style="border-color:' + t.tblBorder + ';"><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">' + u.name.split(' ').map(function (n) { return n[0]; }).slice(0, 2).join('') + '</div><span style="color:' + t.textPri + ';font-weight:600;font-size:12px;">' + u.name + '</span></div></td><td style="color:' + t.textSec + ';border-color:' + t.tblBorder + ';">' + u.email + '</td><td style="border-color:' + t.tblBorder + ';"><span style="background:rgba(76,175,80,0.1);color:#4CAF50;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">' + u.goal + '</span></td><td style="border-color:' + t.tblBorder + ';"><div style="display:flex;align-items:center;gap:6px;"><span style="color:' + adh_color + ';font-weight:700;font-size:12px;">' + u.adh + '%</span><div style="width:40px;height:4px;background:' + t.barBg + ';border-radius:2px;overflow:hidden;"><div style="width:' + u.adh + '%;height:100%;background:' + adh_color + ';border-radius:2px;"></div></div></div></td><td style="color:' + t.textPri + ';font-weight:600;border-color:' + t.tblBorder + ';">' + u.ai + '</td><td style="border-color:' + t.tblBorder + ';"><span style="background:' + status_bg + ';color:' + status_color + ';padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">' + u.status + '</span></td><td style="color:' + t.textSec + ';border-color:' + t.tblBorder + ';">' + u.joined + '</td></tr>';
+    }).join('');
+  }
+
+  function renderOvUsers() {
+    var t = isDark ? DT : LT;
+    var tbody = document.getElementById('ov-tbody');
+    if (!tbody) return;
+    var slice = users.slice(0, 4);
+    tbody.innerHTML = slice.map(function (u) {
+      var adh_color = u.adh >= 80 ? '#4CAF50' : u.adh >= 60 ? '#FFA726' : '#EF5350';
+      var status_color = u.status === 'Active' ? '#4CAF50' : '#6B7280';
+      var status_bg = u.status === 'Active' ? 'rgba(76,175,80,0.12)' : 'rgba(107,114,128,0.12)';
+      return '<tr><td style="border-color:' + t.tblBorder + ';"><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">' + u.name.split(' ').map(function (n) { return n[0]; }).slice(0, 2).join('') + '</div><span style="color:' + t.textPri + ';font-weight:600;font-size:12px;">' + u.name + '</span></div></td><td style="border-color:' + t.tblBorder + ';"><span style="background:rgba(76,175,80,0.1);color:#4CAF50;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">' + u.goal + '</span></td><td style="border-color:' + t.tblBorder + ';"><span style="color:' + adh_color + ';font-weight:700;font-size:12px;">' + u.adh + '%</span></td><td style="border-color:' + t.tblBorder + ';"><span style="background:' + status_bg + ';color:' + status_color + ';padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">' + u.status + '</span></td><td style="color:' + t.textSec + ';border-color:' + t.tblBorder + ';">' + u.joined + '</td></tr>';
+    }).join('');
+  }
+
+  function filterUsers(q) {
+    var goalF = document.getElementById('goal-filter');
+    var goal = goalF ? goalF.value : '';
+    var filtered = users.filter(function (u) {
+      var matchQ = !q || u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase());
+      var matchG = !goal || u.goal === goal;
+      return matchQ && matchG;
+    });
+    renderUsers(filtered);
+  }
+
+  function goPage(id) {
+    document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(function (n) {
+      n.classList.remove('active');
+      n.style.color = '#9CA3AF';
+      n.style.background = 'transparent';
+    });
+    var ni = document.getElementById('nav-' + id);
+    if (ni) { ni.classList.add('active'); ni.style.color = '#4CAF50'; ni.style.background = 'rgba(76,175,80,0.08)'; }
+    var titles = { overview: 'Overview', users: 'Users', meals: 'Meals & AI', analytics: 'Analytics', reports: 'Reports' };
+    document.getElementById('tb-title').textContent = titles[id] || id;
+    if (id === 'users') renderUsers(users);
+  }
+
+  function toggleTheme() {
+    isDark = !isDark;
+    applyTheme(isDark);
+    renderOvUsers();
+    if (document.getElementById('page-users').classList.contains('active')) renderUsers(users);
+  }
+
+  applyTheme(true);
+  renderOvUsers();
+</script>

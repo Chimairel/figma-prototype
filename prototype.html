@@ -1270,7 +1270,7 @@
             </div>
           </div>
 
-          <h2 style="font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;">Building your NutriMind</h2>
+          <h2 style="font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;">Tailoring your NutriMind</h2>
           <p id="loading-txt" style="font-size:14px;color:#9CA3AF;line-height:1.6;min-height:44px;">Analyzing your
             biometrics...</p>
 
@@ -1440,18 +1440,33 @@
         <div class="bot-drawer bot-drawer-main">
           <div style="width:40px;height:4px;background:#4B5563;border-radius:2px;margin:0 auto 20px;"></div>
           <div class="bot-chat-log" style="display:flex;flex-direction:column;height:100%;">
-            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;" class="txt-pri">Hey Chimairel! 🥗</h3>
-            <p style="font-size:14px;margin-bottom:20px;" class="txt-sec">I'm your AI Nutritionist. What did we eat
-              today?</p>
-            <div style="flex:1;background:rgba(156,163,175,0.05);border-radius:16px;padding:12px;margin-bottom:16px;">
-              <p style="font-size:12px;color:#9CA3AF;text-align:center;margin-top:40px;">Try: "I had a cup of Chicken
-                Mami and 1 cup of white rice for lunch."</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <h3 style="font-size:18px;font-weight:700;" class="txt-pri">Hey Chimairel! 🥗</h3>
+              <span style="font-size:10px;font-weight:800;color:#5C6BC0;background:rgba(92,107,192,0.1);padding:4px 10px;border-radius:20px;letter-spacing:0.5px;border:1px solid rgba(92,107,192,0.2);">NUTRIBOT AI</span>
             </div>
-            <div class="search-bar" style="margin-bottom:0;">
-              <input type="text" placeholder="Type or use voice..."
+            <p style="font-size:14px;margin-bottom:24px;" class="txt-sec">I'm your AI Nutritionist. What did we eat today?</p>
+            
+            <div style="flex:1;display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
+              <!-- User Message -->
+              <div style="align-self:flex-end;max-width:85%;background:#4CAF50;padding:12px 16px;border-radius:18px 18px 2px 18px;box-shadow: 0 4px 12px rgba(76,175,80,0.15);">
+                <p style="font-size:13px;color:#fff;line-height:1.5;font-weight:500;">I had a bowl of Sinigang na Baboy and one cup of white rice for lunch.</p>
+              </div>
+
+              <!-- AI Response -->
+              <div style="align-self:flex-start;max-width:85%;background:rgba(156,163,175,0.08);padding:12px 16px;border-radius:2px 18px 18px 18px;border:1px solid rgba(255,255,255,0.05);">
+                <p style="font-size:13px;line-height:1.5;" class="txt-pri">Delicious choice! 🍲 That's approximately **420 kcal**. I've logged your macros and adjusted your dinner recommendation to keep you on track for your 1,800 kcal goal.</p>
+              </div>
+
+              <div style="text-align:center;margin-top:10px;">
+                <p style="font-size:11px;font-style:italic;" class="txt-hint">Chat continued... swipe up for more</p>
+              </div>
+            </div>
+
+            <div class="search-bar" style="margin-bottom:0;border:1.5px solid rgba(156,163,175,0.15);">
+              <input type="text" placeholder="Explain your meal..."
                 style="flex:1;background:transparent;border:none;outline:none;font-size:14px;" class="txt-pri">
               <button
-                style="background:#4CAF50;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                style="background:#4CAF50;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 10px rgba(76,175,80,0.3);">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round"
                     stroke-linejoin="round" />
@@ -1520,13 +1535,16 @@
               Fri</div>
           </div>
 
-          <button onclick="openBotDrawer('genday')"
-            style="width:100%;padding:11px;border-radius:14px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(92,107,192,0.15));border:1.5px solid #4CAF50;cursor:pointer;font-size:13px;font-weight:700;color:#4CAF50;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5L8 2z" fill="#4CAF50" />
-            </svg>
-            Generate new day with AI &#8599;
-          </button>
+          <div class="bento bento-sm"
+            style="display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:14px;border:1px solid rgba(76,175,80,0.2);">
+            <div style="font-size:20px;">💡</div>
+            <div>
+              <p style="font-size:11px;font-weight:700;color:#4CAF50;margin-bottom:2px;letter-spacing:1px;">AI DAILY STRATEGY
+              </p>
+              <p style="font-size:12px;line-height:1.4;" class="txt-sec">We've prioritized iron-rich ingredients today to
+                support your High Activity level.</p>
+            </div>
+          </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
 
             <!-- BREAKFAST CARD — Done -->
@@ -1537,9 +1555,6 @@
                 <span
                   style="font-size:10px;font-weight:700;color:#4CAF50;background:rgba(76,175,80,0.15);padding:3px 8px;border-radius:8px;">Done
                   ✓</span>
-                <div onclick="event.stopPropagation();openBotDrawer('swap');"
-                  style="background:rgba(0,0,0,0.3);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(4px);cursor:pointer;">
-                  ⟲</div>
               </div>
               <div style="display:flex;align-items:center;padding:14px;gap:14px;">
                 <div
@@ -1568,9 +1583,6 @@
                 <span
                   style="font-size:10px;font-weight:700;color:#4CAF50;background:rgba(76,175,80,0.15);padding:3px 8px;border-radius:8px;">Done
                   ✓</span>
-                <div onclick="event.stopPropagation();openBotDrawer('swap');"
-                  style="background:rgba(0,0,0,0.3);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(4px);cursor:pointer;">
-                  ⟲</div>
               </div>
               <div style="display:flex;align-items:center;padding:14px;gap:14px;">
                 <div
@@ -1598,9 +1610,6 @@
               <div style="position:absolute;top:10px;right:10px;z-index:2;display:flex;gap:6px;align-items:center;">
                 <span
                   style="font-size:10px;font-weight:700;color:#FFA726;background:rgba(255,167,38,0.12);padding:3px 8px;border-radius:8px;">Pending</span>
-                <div onclick="event.stopPropagation();openBotDrawer('swap');"
-                  style="background:rgba(0,0,0,0.3);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(4px);cursor:pointer;">
-                  ⟲</div>
               </div>
               <div style="display:flex;align-items:center;padding:14px;gap:14px;">
                 <div
